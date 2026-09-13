@@ -9,12 +9,6 @@ const API_URL =
     ? import.meta.env.VITE_API_URL.replace('/api', '')
     : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
         ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
         : 'https://fashionshop1.onrender.com');
 
 const SELLER_WHATSAPP = '255757170544';
@@ -56,7 +50,7 @@ export default function Cart() {
       clear();
       navigate('/account');
     } catch (err) {
-      setMsg('Ã¢Å¡Â Ã¯Â¸Â ' + (err.response?.data?.error || 'Order failed'));
+      setMsg('âš ï¸ ' + (err.response?.data?.error || 'Order failed'));
       setPlacing(false);
     }
   };
@@ -66,9 +60,9 @@ export default function Cart() {
     items.forEach((i, idx) => {
       const subtotal = i.price * i.quantity;
       text += `${idx + 1}. ${i.name}${i.variantLabel ? ` (${i.variantLabel})` : ''}\n`;
-      text += `   ${i.quantity} Ãƒâ€” TZS ${Number(i.price).toLocaleString()} = TZS ${subtotal.toLocaleString()}\n\n`;
+      text += `   ${i.quantity} Ã— TZS ${Number(i.price).toLocaleString()} = TZS ${subtotal.toLocaleString()}\n\n`;
     });
-    text += `Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬\n`;
+    text += `â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€\n`;
     text += `JUMLA (TOTAL): TZS ${total.toLocaleString()}\n\n`;
     text += `Njia ya malipo: ${paymentMethod.toUpperCase()}\n\n`;
     text += `Naomba kujadiliana zaidi. Asante!`;
@@ -78,12 +72,12 @@ export default function Cart() {
   const whatsappLink = `https://wa.me/${SELLER_WHATSAPP}?text=${buildWhatsAppMessage()}`;
 
   const paymentOptions = [
-    { id: 'whatsapp', label: 'Order on WhatsApp & negotiate',    icon: 'Ã°Å¸â€™Â¬' },
-    { id: 'mpesa',    label: 'M-Pesa (Vodacom)',                 icon: 'Ã°Å¸â€œÂ±' },
-    { id: 'tigopesa', label: 'Mixx by Yas (Tigo Pesa)',          icon: 'Ã°Å¸â€œÂ±' },
-    { id: 'airtel',   label: 'Airtel Money',                     icon: 'Ã°Å¸â€œÂ±' },
-    { id: 'halopesa', label: 'HaloPesa',                         icon: 'Ã°Å¸â€œÂ±' },
-    { id: 'cash',     label: 'Cash on Delivery (Dar es Salaam)', icon: 'Ã°Å¸â€™Âµ' },
+    { id: 'whatsapp', label: 'Order on WhatsApp & negotiate',    icon: 'ðŸ’¬' },
+    { id: 'mpesa',    label: 'M-Pesa (Vodacom)',                 icon: 'ðŸ“±' },
+    { id: 'tigopesa', label: 'Mixx by Yas (Tigo Pesa)',          icon: 'ðŸ“±' },
+    { id: 'airtel',   label: 'Airtel Money',                     icon: 'ðŸ“±' },
+    { id: 'halopesa', label: 'HaloPesa',                         icon: 'ðŸ“±' },
+    { id: 'cash',     label: 'Cash on Delivery (Dar es Salaam)', icon: 'ðŸ’µ' },
   ];
 
   return (
@@ -102,7 +96,7 @@ export default function Cart() {
         </div>
       ) : (
         <>
-          {/* Ã¢â€â‚¬Ã¢â€â‚¬ Itemized invoice Ã¢â€â‚¬Ã¢â€â‚¬ */}
+          {/* â”€â”€ Itemized invoice â”€â”€ */}
           <div className="border border-gray-200 mb-6">
             <div className="hidden md:grid grid-cols-12 gap-3 px-4 py-3 bg-gray-50 text-xs uppercase tracking-wider text-gray-500 border-b">
               <div className="col-span-5">Item</div>
@@ -143,7 +137,7 @@ export default function Cart() {
                       <button
                         onClick={() => decrease(i.id)}
                         className="w-8 h-8 hover:bg-gray-100"
-                      >Ã¢Ë†â€™</button>
+                      >âˆ’</button>
                       <input
                         type="number"
                         min="1"
@@ -171,7 +165,7 @@ export default function Cart() {
             })}
           </div>
 
-          {/* Ã¢â€â‚¬Ã¢â€â‚¬ Totals + Payment methods side by side Ã¢â€â‚¬Ã¢â€â‚¬ */}
+          {/* â”€â”€ Totals + Payment methods side by side â”€â”€ */}
           <div className="grid md:grid-cols-2 gap-6">
 
             {/* Totals box */}
@@ -228,7 +222,7 @@ export default function Cart() {
               {/* Dynamic instructions */}
               <div className="mt-3 p-3 bg-blue-50 border border-blue-200 text-xs text-blue-900">
                 {paymentMethod === 'whatsapp' && (
-                  <>Click <strong>Order via WhatsApp</strong> below Ã¢â‚¬â€ we'll confirm price, delivery, and payment on chat.</>
+                  <>Click <strong>Order via WhatsApp</strong> below â€” we'll confirm price, delivery, and payment on chat.</>
                 )}
                 {paymentMethod === 'mpesa' && (
                   <>Send <strong>TZS {total.toLocaleString()}</strong> to <strong>M-Pesa {SELLER_MPESA}</strong> (Name: FASHIONSHOP). Then click <strong>Place Order</strong> and share the code on WhatsApp.</>
@@ -249,7 +243,7 @@ export default function Cart() {
             </div>
           </div>
 
-          {/* Ã¢â€â‚¬Ã¢â€â‚¬ Actions Ã¢â€â‚¬Ã¢â€â‚¬ */}
+          {/* â”€â”€ Actions â”€â”€ */}
           <div className="mt-6 flex flex-col md:flex-row gap-3 md:justify-end">
             <a
               href={whatsappLink}
@@ -277,7 +271,7 @@ export default function Cart() {
           </div>
 
           <p className="mt-3 text-xs text-gray-500 text-center">
-            Ã°Å¸â€â€™ Secure ordering Ã‚Â· We'll contact you to confirm Ã‚Â· Payment: {paymentMethod.toUpperCase()}
+            ðŸ”’ Secure ordering Â· We'll contact you to confirm Â· Payment: {paymentMethod.toUpperCase()}
           </p>
         </>
       )}
