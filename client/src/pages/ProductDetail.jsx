@@ -42,9 +42,7 @@ export default function ProductDetail() {
 
   const images = product.images?.length > 0 ? product.images : ['https://via.placeholder.com/600'];
   const currentPrice = selectedVariant?.price || product.price || 0;
-  const currentStock = selectedVariant
-    ? selectedVariant.stock
-    : product.stock || 0;
+  const currentStock = selectedVariant ? selectedVariant.stock : product.stock || 0;
   const total = qty * currentPrice;
 
   const decrease = () => setQty(q => Math.max(1, q - 1));
@@ -52,13 +50,13 @@ export default function ProductDetail() {
 
   const whatsappMessage = encodeURIComponent(
     `Habari! Nataka kununua:\n\n` +
-    `ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ ${product.name}\n` +
+    `Product: ${product.name}\n` +
     (selectedVariant
-      ? `ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¨ ${selectedVariant.color}${selectedVariant.size ? ` Ãƒâ€šÃ‚Â· ${selectedVariant.size}` : ''}\n`
+      ? `Variant: ${selectedVariant.color}${selectedVariant.size ? ` / ${selectedVariant.size}` : ''}\n`
       : '') +
-    `ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â° Price: TZS ${Number(currentPrice).toLocaleString()}\n` +
-    `ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¢ Quantity: ${qty}\n` +
-    `ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Âµ Total: TZS ${total.toLocaleString()}\n\n` +
+    `Price: TZS ${Number(currentPrice).toLocaleString()}\n` +
+    `Quantity: ${qty}\n` +
+    `Total: TZS ${total.toLocaleString()}\n\n` +
     `Naomba kujadiliana zaidi. Asante!`
   );
   const whatsappLink = `https://wa.me/${SELLER_WHATSAPP}?text=${whatsappMessage}`;
@@ -81,7 +79,6 @@ export default function ProductDetail() {
     <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
 
-        {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Gallery ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
         <div className="md:sticky md:top-20 md:self-start">
           <div className="w-full max-w-[420px] mx-auto">
             <img
@@ -100,11 +97,7 @@ export default function ProductDetail() {
                       i === activeImage ? 'border-black' : 'border-transparent hover:border-gray-300'
                     }`}
                   >
-                    <img
-                      src={getImageUrl(img)}
-                      alt={`thumb ${i}`}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={getImageUrl(img)} alt={`thumb ${i}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -112,7 +105,6 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Details ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
         <div>
           <h1 className="text-2xl md:text-3xl font-light">{product.name}</h1>
           <p className="mt-3 text-xl md:text-2xl">TZS {currentPrice.toLocaleString()}</p>
@@ -120,7 +112,6 @@ export default function ProductDetail() {
             {product.description}
           </p>
 
-          {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Variants ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
           {variants.length > 0 && (
             <div className="mt-6">
               <p className="text-xs uppercase tracking-wider text-gray-500 mb-3">
@@ -144,9 +135,7 @@ export default function ProductDetail() {
                       }`}
                     >
                       <span>{v.color}{v.size ? ` / ${v.size}` : ''}</span>
-                      <span className={`text-[10px] mt-1 ${
-                        isSelected ? 'text-white/70' : 'text-gray-400'
-                      }`}>
+                      <span className={`text-[10px] mt-1 ${isSelected ? 'text-white/70' : 'text-gray-400'}`}>
                         {isOut ? 'Out of stock' : `${v.stock} available`}
                       </span>
                     </button>
@@ -156,11 +145,10 @@ export default function ProductDetail() {
             </div>
           )}
 
-          {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Quantity ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
           <div className="mt-6 flex items-center gap-4">
             <span className="text-xs uppercase tracking-wider text-gray-500">Quantity</span>
             <div className="flex items-center border border-gray-300">
-              <button onClick={decrease} className="w-9 h-9 text-lg hover:bg-gray-100">ÃƒÂ¢Ã‹â€ Ã¢â‚¬â„¢</button>
+              <button onClick={decrease} className="w-9 h-9 text-lg hover:bg-gray-100">-</button>
               <input
                 type="number"
                 min="1"
@@ -173,7 +161,6 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Price summary ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
           <div className="mt-5 p-3 bg-gray-50 border border-gray-200 text-sm">
             <div className="flex justify-between text-gray-600">
               <span>Subtotal</span>
@@ -185,7 +172,6 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ PAYMENT METHODS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
           <div className="mt-6 border border-gray-200 p-4">
             <p className="text-xs uppercase tracking-wider text-gray-500 mb-3">
               How would you like to pay?
@@ -193,12 +179,12 @@ export default function ProductDetail() {
 
             <div className="space-y-2">
               {[
-                { id: 'whatsapp', label: 'Order on WhatsApp & negotiate',    icon: 'ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¬' },
-                { id: 'mpesa',    label: 'M-Pesa (Vodacom)',                 icon: 'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â±' },
-                { id: 'tigopesa', label: 'Mixx by Yas (Tigo Pesa)',          icon: 'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â±' },
-                { id: 'airtel',   label: 'Airtel Money',                     icon: 'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â±' },
-                { id: 'halopesa', label: 'HaloPesa',                         icon: 'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â±' },
-                { id: 'cash',     label: 'Cash on Delivery (Dar es Salaam)', icon: 'ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Âµ' },
+                { id: 'whatsapp', label: 'Order on WhatsApp & negotiate' },
+                { id: 'mpesa',    label: 'M-Pesa (Vodacom)' },
+                { id: 'tigopesa', label: 'Mixx by Yas (Tigo Pesa)' },
+                { id: 'airtel',   label: 'Airtel Money' },
+                { id: 'halopesa', label: 'HaloPesa' },
+                { id: 'cash',     label: 'Cash on Delivery (Dar es Salaam)' },
               ].map(pm => (
                 <label
                   key={pm.id}
@@ -215,7 +201,6 @@ export default function ProductDetail() {
                     checked={paymentMethod === pm.id}
                     onChange={() => setPaymentMethod(pm.id)}
                   />
-                  <span className="text-base">{pm.icon}</span>
                   <span>{pm.label}</span>
                 </label>
               ))}
@@ -223,7 +208,7 @@ export default function ProductDetail() {
 
             <div className="mt-3 p-3 bg-blue-50 border border-blue-200 text-xs md:text-sm text-blue-900">
               {paymentMethod === 'whatsapp' && (
-                <>Click <strong>Order via WhatsApp</strong> below ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â chat directly with us to confirm price, delivery, and payment.</>
+                <>Click <strong>Order via WhatsApp</strong> below - chat directly with us to confirm price, delivery, and payment.</>
               )}
               {paymentMethod === 'mpesa' && (
                 <>Send <strong>TZS {total.toLocaleString()}</strong> to <strong>M-Pesa {SELLER_MPESA}</strong> (Name: FASHIONSHOP). Then click <strong>Order via WhatsApp</strong> and share the confirmation code.</>
@@ -243,7 +228,6 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ ADD TO CART ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â with green confirmation ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
           <button
             onClick={handleAddToCart}
             disabled={currentStock === 0}
@@ -258,43 +242,35 @@ export default function ProductDetail() {
             {currentStock === 0
               ? 'Out of Stock'
               : justAdded
-              ? `ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Added ${qty} to Cart`
+              ? `Added ${qty} to Cart`
               : `Add ${qty} to Cart`}
           </button>
 
-          {/* Live cart summary after adding */}
           {count > 0 && (
             <div className="mt-3 p-3 bg-gray-50 border border-gray-200 text-sm flex flex-wrap justify-between items-center gap-2">
               <div>
-                <span className="text-gray-500">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ¢â‚¬â„¢ In your cart: </span>
+                <span className="text-gray-500">In your cart: </span>
                 <strong>{count} item{count !== 1 ? 's' : ''}</strong>
-                <span className="text-gray-500"> Ãƒâ€šÃ‚Â· </span>
+                <span className="text-gray-500"> - </span>
                 <strong>TZS {cartTotal.toLocaleString()}</strong>
               </div>
-              <Link
-                to="/cart"
-                className="text-xs uppercase tracking-wider underline hover:no-underline"
-              >
-                Go to Cart ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢
+              <Link to="/cart" className="text-xs uppercase tracking-wider underline hover:no-underline">
+                Go to Cart
               </Link>
             </div>
           )}
 
-          {/* WhatsApp order button */}
           <a
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-3 w-full py-3.5 text-sm bg-green-600 text-white uppercase tracking-widest hover:bg-green-700 flex items-center justify-center gap-2"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-            </svg>
             Order via WhatsApp
           </a>
 
           <p className="mt-3 text-xs text-gray-500 text-center">
-            ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â„¢ Secure ordering Ãƒâ€šÃ‚Â· We'll contact you to confirm
+            Secure ordering - We'll contact you to confirm
           </p>
         </div>
       </div>

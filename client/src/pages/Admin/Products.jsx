@@ -10,14 +10,14 @@ const API_URL =
 
 const CATEGORIES = [
   { value: 'women',          label: 'Women' },
-  { value: 'women-dresses',  label: 'Women ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Dresses' },
-  { value: 'women-tops',     label: 'Women ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Tops' },
-  { value: 'women-pants',    label: 'Women ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Pants' },
-  { value: 'women-skirts',   label: 'Women ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Skirts' },
+  { value: 'women-dresses',  label: 'Women - Dresses' },
+  { value: 'women-tops',     label: 'Women - Tops' },
+  { value: 'women-pants',    label: 'Women - Pants' },
+  { value: 'women-skirts',   label: 'Women - Skirts' },
   { value: 'men',            label: 'Men' },
-  { value: 'men-shirts',     label: 'Men ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Shirts' },
-  { value: 'men-pants',      label: 'Men ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Pants' },
-  { value: 'men-jackets',    label: 'Men ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Jackets' },
+  { value: 'men-shirts',     label: 'Men - Shirts' },
+  { value: 'men-pants',      label: 'Men - Pants' },
+  { value: 'men-jackets',    label: 'Men - Jackets' },
   { value: 'kids',           label: 'Kids' },
   { value: 'shoes',          label: 'Shoes' },
   { value: 'bags',           label: 'Bags' },
@@ -39,9 +39,7 @@ export default function Products() {
     category: 'women', description: ''
   });
   const [imageUrls, setImageUrls] = useState([]);
-  const [variants, setVariants] = useState([
-    { color: '', size: '', stock: '' }   // start with 1 empty variant
-  ]);
+  const [variants, setVariants] = useState([{ color: '', size: '', stock: '' }]);
   const [uploading, setUploading] = useState(false);
   const [msg, setMsg] = useState('');
 
@@ -59,9 +57,9 @@ export default function Products() {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setImageUrls(prev => [...prev, ...res.data.urls]);
-      setMsg(`ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Uploaded ${res.data.urls.length} image(s)`);
+      setMsg(`Uploaded ${res.data.urls.length} image(s)`);
     } catch (err) {
-      setMsg('ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Upload failed: ' + (err.response?.data?.error || err.message));
+      setMsg('Upload failed: ' + (err.response?.data?.error || err.message));
     } finally {
       setUploading(false);
     }
@@ -69,26 +67,18 @@ export default function Products() {
 
   const removeImage = (url) => setImageUrls(prev => prev.filter(u => u !== url));
 
-  // ----- Variant helpers -----
-  const addVariant = () =>
-    setVariants(prev => [...prev, { color: '', size: '', stock: '' }]);
-
-  const removeVariant = (i) =>
-    setVariants(prev => prev.filter((_, idx) => idx !== i));
-
+  const addVariant = () => setVariants(prev => [...prev, { color: '', size: '', stock: '' }]);
+  const removeVariant = (i) => setVariants(prev => prev.filter((_, idx) => idx !== i));
   const updateVariant = (i, key, value) =>
-    setVariants(prev =>
-      prev.map((v, idx) => (idx === i ? { ...v, [key]: value } : v))
-    );
+    setVariants(prev => prev.map((v, idx) => (idx === i ? { ...v, [key]: value } : v)));
 
   const add = async (e) => {
     e.preventDefault();
     if (imageUrls.length === 0) {
-      setMsg('ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Please upload at least one image');
+      setMsg('Please upload at least one image');
       return;
     }
     try {
-      // 1. Create the product
       const productRes = await api.post('/products', {
         name: form.name,
         price: parseFloat(form.price),
@@ -101,7 +91,6 @@ export default function Products() {
 
       const productId = productRes.data.id;
 
-      // 2. Create variants (only valid ones)
       const validVariants = variants.filter(v => v.color.trim());
       for (const v of validVariants) {
         await api.post('/variants', {
@@ -112,13 +101,13 @@ export default function Products() {
         });
       }
 
-      setMsg(`ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Product added with ${validVariants.length} variant(s)`);
+      setMsg(`Product added with ${validVariants.length} variant(s)`);
       setForm({ name: '', price: '', oldPrice: '', stock: '', category: 'women', description: '' });
       setImageUrls([]);
       setVariants([{ color: '', size: '', stock: '' }]);
       load();
     } catch (err) {
-      setMsg('ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â ' + (err.response?.data?.error || 'Failed'));
+      setMsg('Failed: ' + (err.response?.data?.error || 'Unknown error'));
     }
   };
 
@@ -180,12 +169,9 @@ export default function Products() {
           className="border px-3 py-2 md:col-span-2"
         />
 
-        {/* ---------- VARIANTS ---------- */}
         <div className="md:col-span-2 border p-4 bg-gray-50">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm uppercase tracking-wider">
-              Colors / Sizes / Stock
-            </h3>
+            <h3 className="text-sm uppercase tracking-wider">Colors / Sizes / Stock</h3>
             <button
               type="button"
               onClick={addVariant}
@@ -208,7 +194,7 @@ export default function Products() {
                 onChange={e => updateVariant(i, 'size', e.target.value)}
                 className="border px-2 py-2 col-span-4 bg-white"
               >
-                <option value="">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Size (optional) ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</option>
+                <option value="">- Size (optional) -</option>
                 {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
               <input
@@ -223,19 +209,18 @@ export default function Products() {
                 onClick={() => removeVariant(i)}
                 className="col-span-1 text-red-500 hover:bg-red-50"
                 title="Remove variant"
-              >ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¢</button>
+              >x</button>
             </div>
           ))}
 
           <p className="text-xs text-gray-500 mt-2">
-            Example: Black / M / 5 &nbsp;Ãƒâ€šÃ‚Â·&nbsp; White / L / 2 &nbsp;Ãƒâ€šÃ‚Â·&nbsp; Green / One Size / 10
+            Example: Black / M / 5 &nbsp;|&nbsp; White / L / 2 &nbsp;|&nbsp; Green / One Size / 10
           </p>
         </div>
 
-        {/* Image upload */}
         <div className="md:col-span-2 border-2 border-dashed border-gray-300 p-6 text-center">
           <p className="text-sm text-gray-500 mb-3">
-            Upload images ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â drag & drop, select multiple, or ZIP
+            Upload images - drag & drop, select multiple, or ZIP
           </p>
           <input
             type="file"
@@ -257,7 +242,7 @@ export default function Products() {
                   type="button"
                   onClick={() => removeImage(url)}
                   className="absolute top-1 right-1 bg-red-500 text-white w-6 h-6 text-xs opacity-0 group-hover:opacity-100"
-                >ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¢</button>
+                >x</button>
               </div>
             ))}
           </div>
@@ -270,7 +255,6 @@ export default function Products() {
         {msg && <p className="md:col-span-2 text-sm">{msg}</p>}
       </form>
 
-      {/* Product list */}
       <h2 className="text-xl mb-4">All Products ({products.length})</h2>
       <div className="grid md:grid-cols-3 gap-4">
         {products.map(p => (
@@ -283,7 +267,7 @@ export default function Products() {
             />
             <p className="font-medium">{p.name}</p>
             <p className="text-sm text-gray-500">
-              {p.category} Ãƒâ€šÃ‚Â· TZS {p.price}
+              {p.category} - TZS {p.price}
             </p>
             <button
               onClick={async () => {

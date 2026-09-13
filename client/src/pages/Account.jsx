@@ -4,9 +4,12 @@ import api from '../api/axios.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 
-const API_URL = import.meta.env.VITE_API_URL
-  ? import.meta.env.VITE_API_URL.replace('/api', '')
-  : 'http://localhost:5000';
+const API_URL =
+  import.meta.env.VITE_API_URL
+    ? import.meta.env.VITE_API_URL.replace('/api', '')
+    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://fashionshop1.onrender.com');
 
 function getImageUrl(path) {
   if (!path) return 'https://via.placeholder.com/200';
@@ -20,7 +23,7 @@ function Stars({ value = 0, size = 14 }) {
     <span className="inline-flex items-center" style={{ fontSize: size }}>
       {[1, 2, 3, 4, 5].map(i => (
         <span key={i} className={i <= full ? 'text-yellow-500' : 'text-gray-300'}>
-          Ã¢Ëœâ€¦
+          {'\u2605'}
         </span>
       ))}
       <span className="text-xs text-gray-500 ml-1">({value.toFixed(1)})</span>
@@ -30,7 +33,7 @@ function Stars({ value = 0, size = 14 }) {
 
 export default function Account() {
   const { user, logout } = useAuth();
-  const { items, add, remove, total, count, increase, decrease, updateQty } = useCart();
+  const { items, add, remove, total, count, increase, decrease } = useCart();
   const navigate = useNavigate();
 
   const [tab, setTab] = useState('shop');
@@ -81,39 +84,33 @@ export default function Account() {
         setWishlist(res.data);
       }
     } catch (err) {
-      setMsg('Ã¢Å¡Â Ã¯Â¸Â ' + (err.response?.data?.error || 'Failed'));
+      setMsg('Failed: ' + (err.response?.data?.error || 'Unknown'));
     }
   };
 
   const isWishlisted = (productId) =>
     wishlist.some(w => w.product.id === productId);
 
-  const inCart = (productId) =>
-    items.find(i => i.id === productId);
+  const inCart = (productId) => items.find(i => i.id === productId);
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
 
-      {/* Ã¢â€â‚¬Ã¢â€â‚¬ Header Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <div className="flex flex-wrap justify-between items-center gap-4 mb-6 border-b pb-6">
         <div>
           <h1 className="text-3xl font-light">My Dashboard</h1>
           <p className="text-sm text-gray-500 mt-1">
-            {user.name} Ã‚Â· {user.phone}
+            {user.name} - {user.phone}
           </p>
         </div>
         <button
-          onClick={() => {
-            logout();
-            window.location.href = '/';   // Ã¢â€ Â full reload Ã¢â€ â€™ home page + cleared cart
-          }}
+          onClick={() => { logout(); window.location.href = '/'; }}
           className="px-5 py-2 border border-black text-sm uppercase tracking-widest hover:bg-black hover:text-white transition"
         >
           Logout
         </button>
       </div>
 
-      {/* Ã¢â€â‚¬Ã¢â€â‚¬ Stats Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <Stat label="Orders"       value={orders.length} />
         <Stat label="Items Bought" value={totalItems} />
@@ -121,31 +118,22 @@ export default function Account() {
         <Stat label="Wishlist"     value={wishlist.length} />
       </div>
 
-      {/* Ã¢â€â‚¬Ã¢â€â‚¬ Tabs Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <div className="flex flex-wrap gap-2 mb-8">
-        <TabBtn active={tab === 'shop'}     onClick={() => setTab('shop')}>
-          Ã°Å¸â€ºÂÃ¯Â¸Â Shop All Products
-        </TabBtn>
-        <TabBtn active={tab === 'orders'}   onClick={() => setTab('orders')}>
-          Ã°Å¸â€œÂ¦ My Orders ({orders.length})
-        </TabBtn>
-        <TabBtn active={tab === 'wishlist'} onClick={() => setTab('wishlist')}>
-          Ã¢ÂÂ¤Ã¯Â¸Â Wishlist ({wishlist.length})
-        </TabBtn>
+        <TabBtn active={tab === 'shop'}     onClick={() => setTab('shop')}>Shop All Products</TabBtn>
+        <TabBtn active={tab === 'orders'}   onClick={() => setTab('orders')}>My Orders ({orders.length})</TabBtn>
+        <TabBtn active={tab === 'wishlist'} onClick={() => setTab('wishlist')}>Wishlist ({wishlist.length})</TabBtn>
       </div>
 
       {msg && <p className="mb-4 text-sm text-green-700">{msg}</p>}
 
-      {/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ TAB: SHOP Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */}
       {tab === 'shop' && (
         <>
-          {/* Ã¢â€â‚¬Ã¢â€â‚¬ YOUR SELECTION (CART) Ã¢â‚¬â€ TOP Ã¢â€â‚¬Ã¢â€â‚¬ */}
           {items.length > 0 && (
             <div className="mb-10 border-2 border-black bg-white">
               <div className="flex flex-wrap items-center justify-between gap-3 bg-black text-white p-4">
                 <div>
                   <h2 className="text-lg md:text-xl">
-                    Ã°Å¸â€ºâ€™ Your Selection ({count} item{count !== 1 ? 's' : ''})
+                    Your Selection ({count} item{count !== 1 ? 's' : ''})
                   </h2>
                   <p className="text-xs text-white/70 mt-1">
                     Review your items below and confirm to pay
@@ -155,7 +143,7 @@ export default function Account() {
                   to="/cart"
                   className="px-5 py-2 bg-white text-black text-xs uppercase tracking-widest hover:bg-gray-200"
                 >
-                  Continue to Payment Ã¢â€ â€™
+                  Continue to Payment
                 </Link>
               </div>
 
@@ -176,19 +164,13 @@ export default function Account() {
                         <p className="text-xs text-gray-500">{i.variantLabel}</p>
                       )}
                       <p className="text-sm text-gray-500 mt-1">
-                        TZS {i.price.toLocaleString()} Ãƒâ€” {i.quantity}
+                        TZS {i.price.toLocaleString()} x {i.quantity}
                       </p>
                     </div>
                     <div className="flex items-center border bg-white">
-                      <button
-                        onClick={() => decrease(i.id)}
-                        className="w-8 h-8 hover:bg-gray-100 text-lg"
-                      >Ã¢Ë†â€™</button>
+                      <button onClick={() => decrease(i.id)} className="w-8 h-8 hover:bg-gray-100 text-lg">-</button>
                       <span className="w-10 text-center text-sm">{i.quantity}</span>
-                      <button
-                        onClick={() => increase(i.id)}
-                        className="w-8 h-8 hover:bg-gray-100 text-lg"
-                      >+</button>
+                      <button onClick={() => increase(i.id)} className="w-8 h-8 hover:bg-gray-100 text-lg">+</button>
                     </div>
                     <p className="w-28 text-right font-medium">
                       TZS {(i.price * i.quantity).toLocaleString()}
@@ -196,19 +178,14 @@ export default function Account() {
                     <button
                       onClick={() => remove(i.id)}
                       className="text-red-500 text-lg w-8 h-8 hover:bg-red-50 rounded"
-                      title="Remove"
-                    >
-                      Ã¢Å“â€¢
-                    </button>
+                    >x</button>
                   </div>
                 ))}
               </div>
 
               <div className="border-t-2 border-black p-4 flex flex-wrap justify-between items-center gap-3 bg-gray-50">
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-gray-500">
-                    Total to pay
-                  </p>
+                  <p className="text-xs uppercase tracking-wider text-gray-500">Total to pay</p>
                   <p className="text-2xl font-light">TZS {total.toLocaleString()}</p>
                 </div>
                 <Link
@@ -221,7 +198,6 @@ export default function Account() {
             </div>
           )}
 
-          {/* Ã¢â€â‚¬Ã¢â€â‚¬ ALL PRODUCTS Ã¢â‚¬â€ BOTTOM Ã¢â€â‚¬Ã¢â€â‚¬ */}
           <h2 className="text-xl mb-4">
             {items.length > 0 ? 'More Products' : 'All Products'}
           </h2>
@@ -236,10 +212,7 @@ export default function Account() {
                 const liked = isWishlisted(p.id);
                 const cartItem = inCart(p.id);
                 return (
-                  <div
-                    key={p.id}
-                    className={`border group ${cartItem ? 'border-black border-2' : ''}`}
-                  >
+                  <div key={p.id} className={`border group ${cartItem ? 'border-black border-2' : ''}`}>
                     <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
                       <Link to={`/product/${p.id}`}>
                         <img
@@ -250,7 +223,7 @@ export default function Account() {
                       </Link>
                       {cartItem && (
                         <span className="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1">
-                          Ã¢Å“â€œ In cart ({cartItem.quantity})
+                          In cart ({cartItem.quantity})
                         </span>
                       )}
                       <button
@@ -259,7 +232,7 @@ export default function Account() {
                           liked ? 'text-red-500' : 'text-gray-400'
                         } hover:scale-110 transition`}
                       >
-                        {liked ? 'Ã¢â„¢Â¥' : 'Ã¢â„¢Â¡'}
+                        {liked ? '\u2665' : '\u2661'}
                       </button>
                     </div>
                     <div className="p-3">
@@ -275,7 +248,7 @@ export default function Account() {
                       <button
                         onClick={() => {
                           add(p, 1);
-                          setMsg(`Ã¢Å“â€¦ ${p.name} added to cart`);
+                          setMsg(`${p.name} added to cart`);
                           setTimeout(() => setMsg(''), 2000);
                         }}
                         className="mt-3 w-full py-2 bg-black text-white text-xs uppercase tracking-widest hover:bg-gray-800"
@@ -291,7 +264,6 @@ export default function Account() {
         </>
       )}
 
-      {/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ TAB: ORDERS Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */}
       {tab === 'orders' && (
         <>
           <h2 className="text-xl mb-4">My Orders</h2>
@@ -334,7 +306,7 @@ export default function Account() {
                         <span className="font-medium">
                           TZS {o.total.toLocaleString()}
                         </span>
-                        <span className="text-gray-400">{isOpen ? 'Ã¢â€“Â²' : 'Ã¢â€“Â¼'}</span>
+                        <span className="text-gray-400">{isOpen ? '-' : '+'}</span>
                       </div>
                     </button>
                     {isOpen && (
@@ -351,7 +323,7 @@ export default function Account() {
                                 {item.product?.name || 'Product'}
                               </p>
                               <p className="text-xs text-gray-500">
-                                {item.quantity} Ãƒâ€” TZS {item.price.toLocaleString()}
+                                {item.quantity} x TZS {item.price.toLocaleString()}
                               </p>
                             </div>
                             <p className="text-sm font-medium">
@@ -375,14 +347,13 @@ export default function Account() {
         </>
       )}
 
-      {/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ TAB: WISHLIST Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */}
       {tab === 'wishlist' && (
         <>
           <h2 className="text-xl mb-4">My Wishlist</h2>
           {wishlist.length === 0 ? (
             <div className="border border-dashed p-10 text-center text-gray-500">
               <p>No products in your wishlist yet.</p>
-              <p className="text-sm mt-1">Click the Ã¢â„¢Â¡ on any product to save it here.</p>
+              <p className="text-sm mt-1">Click the heart on any product to save it here.</p>
               <button
                 onClick={() => setTab('shop')}
                 className="mt-4 px-6 py-3 bg-black text-white text-sm uppercase tracking-widest"
@@ -415,7 +386,7 @@ export default function Account() {
                       <button
                         onClick={() => {
                           add(w.product, 1);
-                          setMsg(`Ã¢Å“â€¦ Added to cart`);
+                          setMsg('Added to cart');
                           setTimeout(() => setMsg(''), 1500);
                         }}
                         className="flex-1 py-2 bg-black text-white text-xs uppercase tracking-widest hover:bg-gray-800"
@@ -425,10 +396,7 @@ export default function Account() {
                       <button
                         onClick={() => toggleWishlist(w.product.id)}
                         className="px-3 py-2 border text-xs hover:bg-red-50"
-                        title="Remove"
-                      >
-                        Ã¢Å“â€¢
-                      </button>
+                      >x</button>
                     </div>
                   </div>
                 </div>
@@ -455,9 +423,7 @@ function TabBtn({ active, onClick, children }) {
     <button
       onClick={onClick}
       className={`px-5 py-3 text-sm uppercase tracking-widest border ${
-        active
-          ? 'bg-black text-white border-black'
-          : 'border-gray-300 hover:border-black'
+        active ? 'bg-black text-white border-black' : 'border-gray-300 hover:border-black'
       }`}
     >
       {children}

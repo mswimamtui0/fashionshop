@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios.js';
 
@@ -21,14 +21,13 @@ const FALLBACK_IMAGES = [
   'https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600',
 ];
 
-const ROTATE_MS = 5000;   // change image every 5 seconds
+const ROTATE_MS = 5000;
 
 export default function Hero() {
   const [slides, setSlides] = useState([]);
   const [current, setCurrent] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
-  // 1. Load products from the backend
   useEffect(() => {
     api.get('/products/latest?limit=8')
       .then(res => {
@@ -36,14 +35,12 @@ export default function Hero() {
           .map(p => p.images?.[0])
           .filter(Boolean)
           .map(getImageUrl);
-
         setSlides(images.length > 0 ? images : FALLBACK_IMAGES);
       })
       .catch(() => setSlides(FALLBACK_IMAGES))
       .finally(() => setLoaded(true));
   }, []);
 
-  // 2. Rotate the active image every ROTATE_MS
   useEffect(() => {
     if (slides.length <= 1) return;
     const timer = setInterval(() => {
@@ -52,7 +49,6 @@ export default function Hero() {
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  // 3. Preload the next image so rotation is smooth (no flash)
   useEffect(() => {
     if (slides.length === 0) return;
     const next = (current + 1) % slides.length;
@@ -66,8 +62,6 @@ export default function Hero() {
 
   return (
     <section className="relative h-[55vh] min-h-[380px] w-full overflow-hidden bg-black">
-
-      {/* Layer of images, cross-faded */}
       {slides.map((src, i) => (
         <div
           key={i}
@@ -83,17 +77,13 @@ export default function Hero() {
               transform: i === current ? 'scale(1.05)' : 'scale(1)',
               transition: 'transform 6s ease-out',
             }}
-            onError={e => {
-              e.target.src = FALLBACK_IMAGES[0];
-            }}
+            onError={e => { e.target.src = FALLBACK_IMAGES[0]; }}
           />
         </div>
       ))}
 
-      {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
 
-      {/* Center text */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
         <p className="text-xs md:text-sm tracking-[0.35em] uppercase mb-3 opacity-90">
           FashionShop
@@ -112,7 +102,6 @@ export default function Hero() {
           Shop Now
         </Link>
 
-        {/* Slide indicators */}
         {slides.length > 1 && (
           <div className="absolute bottom-6 flex gap-2">
             {slides.map((_, i) => (

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import api from '../../api/axios.js';
 
 const API_URL =
@@ -10,14 +10,14 @@ const API_URL =
 
 const CATEGORIES = [
   { value: 'women',          label: 'Women' },
-  { value: 'women-dresses',  label: 'Women Ã¢â‚¬â€ Dresses' },
-  { value: 'women-tops',     label: 'Women Ã¢â‚¬â€ Tops' },
-  { value: 'women-pants',    label: 'Women Ã¢â‚¬â€ Pants' },
-  { value: 'women-skirts',   label: 'Women Ã¢â‚¬â€ Skirts' },
+  { value: 'women-dresses',  label: 'Women - Dresses' },
+  { value: 'women-tops',     label: 'Women - Tops' },
+  { value: 'women-pants',    label: 'Women - Pants' },
+  { value: 'women-skirts',   label: 'Women - Skirts' },
   { value: 'men',            label: 'Men' },
-  { value: 'men-shirts',     label: 'Men Ã¢â‚¬â€ Shirts' },
-  { value: 'men-pants',      label: 'Men Ã¢â‚¬â€ Pants' },
-  { value: 'men-jackets',    label: 'Men Ã¢â‚¬â€ Jackets' },
+  { value: 'men-shirts',     label: 'Men - Shirts' },
+  { value: 'men-pants',      label: 'Men - Pants' },
+  { value: 'men-jackets',    label: 'Men - Jackets' },
   { value: 'kids',           label: 'Kids' },
   { value: 'shoes',          label: 'Shoes' },
   { value: 'bags',           label: 'Bags' },
@@ -47,15 +47,11 @@ export default function BulkUpload() {
   const [msg, setMsg] = useState('');
 
   const updateItem = (key, field, value) => {
-    setItems(prev =>
-      prev.map(it => (it._key === key ? { ...it, [field]: value } : it))
-    );
+    setItems(prev => prev.map(it => (it._key === key ? { ...it, [field]: value } : it)));
   };
 
   const addItem = () => setItems(prev => [...prev, emptyItem()]);
-
-  const removeItem = (key) =>
-    setItems(prev => prev.filter(it => it._key !== key));
+  const removeItem = (key) => setItems(prev => prev.filter(it => it._key !== key));
 
   const handleFiles = async (key, files) => {
     if (!files || files.length === 0) return;
@@ -72,7 +68,7 @@ export default function BulkUpload() {
       setItems(prev =>
         prev.map(it =>
           it._key === key
-            ? { ...it, images: [...it.images, ...res.data.urls], uploading: false, uploadingMsg: `Ã¢Å“â€¦ ${res.data.urls.length} uploaded` }
+            ? { ...it, images: [...it.images, ...res.data.urls], uploading: false, uploadingMsg: `Uploaded ${res.data.urls.length}` }
             : it
         )
       );
@@ -80,7 +76,7 @@ export default function BulkUpload() {
       setItems(prev =>
         prev.map(it =>
           it._key === key
-            ? { ...it, uploading: false, uploadingMsg: 'Ã¢Å¡Â Ã¯Â¸Â ' + (err.response?.data?.error || err.message) }
+            ? { ...it, uploading: false, uploadingMsg: 'Upload failed: ' + (err.response?.data?.error || err.message) }
             : it
         )
       );
@@ -111,7 +107,7 @@ export default function BulkUpload() {
 
     const valid = items.filter(it => it.name && it.price && it.category);
     if (valid.length === 0) {
-      setMsg('Ã¢Å¡Â Ã¯Â¸Â Fill in at least one item (name + price + category)');
+      setMsg('Fill in at least one item (name + price + category)');
       setSaving(false);
       return;
     }
@@ -146,10 +142,8 @@ export default function BulkUpload() {
       }
     }
 
-    setMsg(`Ã¢Å“â€¦ Saved ${success} product(s)${failed ? ` Ã‚Â· Ã¢Å¡Â Ã¯Â¸Â ${failed} failed` : ''}`);
-    if (success > 0) {
-      setItems([emptyItem()]);
-    }
+    setMsg(`Saved ${success} product(s)${failed ? ` - ${failed} failed` : ''}`);
+    if (success > 0) setItems([emptyItem()]);
     setSaving(false);
   };
 
@@ -220,7 +214,7 @@ export default function BulkUpload() {
                 onChange={e => updateItem(it._key, 'size', e.target.value)}
                 className="border px-3 py-2 bg-white"
               >
-                <option value="">Ã¢â‚¬â€ Size (optional) Ã¢â‚¬â€</option>
+                <option value="">- Size (optional) -</option>
                 {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
 
@@ -270,7 +264,7 @@ export default function BulkUpload() {
                         type="button"
                         onClick={() => removeImage(it._key, url)}
                         className="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 text-xs opacity-0 group-hover:opacity-100"
-                      >Ã¢Å“â€¢</button>
+                      >x</button>
                     </div>
                   ))}
                 </div>
