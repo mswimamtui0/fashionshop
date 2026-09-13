@@ -10,14 +10,14 @@ const API_URL =
 
 const CATEGORIES = [
   { value: 'women',          label: 'Women' },
-  { value: 'women-dresses',  label: 'Women â€” Dresses' },
-  { value: 'women-tops',     label: 'Women â€” Tops' },
-  { value: 'women-pants',    label: 'Women â€” Pants' },
-  { value: 'women-skirts',   label: 'Women â€” Skirts' },
+  { value: 'women-dresses',  label: 'Women Ã¢â‚¬â€ Dresses' },
+  { value: 'women-tops',     label: 'Women Ã¢â‚¬â€ Tops' },
+  { value: 'women-pants',    label: 'Women Ã¢â‚¬â€ Pants' },
+  { value: 'women-skirts',   label: 'Women Ã¢â‚¬â€ Skirts' },
   { value: 'men',            label: 'Men' },
-  { value: 'men-shirts',     label: 'Men â€” Shirts' },
-  { value: 'men-pants',      label: 'Men â€” Pants' },
-  { value: 'men-jackets',    label: 'Men â€” Jackets' },
+  { value: 'men-shirts',     label: 'Men Ã¢â‚¬â€ Shirts' },
+  { value: 'men-pants',      label: 'Men Ã¢â‚¬â€ Pants' },
+  { value: 'men-jackets',    label: 'Men Ã¢â‚¬â€ Jackets' },
   { value: 'kids',           label: 'Kids' },
   { value: 'shoes',          label: 'Shoes' },
   { value: 'bags',           label: 'Bags' },
@@ -72,7 +72,7 @@ export default function BulkUpload() {
       setItems(prev =>
         prev.map(it =>
           it._key === key
-            ? { ...it, images: [...it.images, ...res.data.urls], uploading: false, uploadingMsg: `âœ… ${res.data.urls.length} uploaded` }
+            ? { ...it, images: [...it.images, ...res.data.urls], uploading: false, uploadingMsg: `Ã¢Å“â€¦ ${res.data.urls.length} uploaded` }
             : it
         )
       );
@@ -80,7 +80,7 @@ export default function BulkUpload() {
       setItems(prev =>
         prev.map(it =>
           it._key === key
-            ? { ...it, uploading: false, uploadingMsg: 'âš ï¸ ' + (err.response?.data?.error || err.message) }
+            ? { ...it, uploading: false, uploadingMsg: 'Ã¢Å¡Â Ã¯Â¸Â ' + (err.response?.data?.error || err.message) }
             : it
         )
       );
@@ -111,7 +111,7 @@ export default function BulkUpload() {
 
     const valid = items.filter(it => it.name && it.price && it.category);
     if (valid.length === 0) {
-      setMsg('âš ï¸ Fill in at least one item (name + price + category)');
+      setMsg('Ã¢Å¡Â Ã¯Â¸Â Fill in at least one item (name + price + category)');
       setSaving(false);
       return;
     }
@@ -146,7 +146,7 @@ export default function BulkUpload() {
       }
     }
 
-    setMsg(`âœ… Saved ${success} product(s)${failed ? ` Â· âš ï¸ ${failed} failed` : ''}`);
+    setMsg(`Ã¢Å“â€¦ Saved ${success} product(s)${failed ? ` Ã‚Â· Ã¢Å¡Â Ã¯Â¸Â ${failed} failed` : ''}`);
     if (success > 0) {
       setItems([emptyItem()]);
     }
@@ -220,7 +220,7 @@ export default function BulkUpload() {
                 onChange={e => updateItem(it._key, 'size', e.target.value)}
                 className="border px-3 py-2 bg-white"
               >
-                <option value="">â€” Size (optional) â€”</option>
+                <option value="">Ã¢â‚¬â€ Size (optional) Ã¢â‚¬â€</option>
                 {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
 
@@ -270,7 +270,7 @@ export default function BulkUpload() {
                         type="button"
                         onClick={() => removeImage(it._key, url)}
                         className="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 text-xs opacity-0 group-hover:opacity-100"
-                      >âœ•</button>
+                      >Ã¢Å“â€¢</button>
                     </div>
                   ))}
                 </div>
