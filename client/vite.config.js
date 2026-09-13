@@ -15,8 +15,9 @@ export default defineConfig({
     port: process.env.PORT || 4173,
     allowedHosts: [
       'fashionshop-web-g4a0.onrender.com',
-      '.onrender.com',         // allow ALL onrender.com subdomains
-      'localhost'
+      '.onrender.com',
+      'localhost',
+      'localhost:3000'
     ]
   }
 });
