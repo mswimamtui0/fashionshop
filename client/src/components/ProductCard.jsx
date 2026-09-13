@@ -1,27 +1,8 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 
-// Where the backend serves uploaded files
 const API_URL =
   import.meta.env.VITE_API_URL
     ? import.meta.env.VITE_API_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
     : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
         ? 'http://localhost:5000'
         : 'https://fashionshop1.onrender.com');
