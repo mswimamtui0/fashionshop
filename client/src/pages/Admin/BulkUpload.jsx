@@ -6,30 +6,18 @@ const API_URL =
     ? import.meta.env.VITE_API_URL.replace('/api', '')
     : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
         ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
         : 'https://fashionshop1.onrender.com');
 
 const CATEGORIES = [
   { value: 'women',          label: 'Women' },
-  { value: 'women-dresses',  label: 'Women â€” Dresses' },
-  { value: 'women-tops',     label: 'Women â€” Tops' },
-  { value: 'women-pants',    label: 'Women â€” Pants' },
-  { value: 'women-skirts',   label: 'Women â€” Skirts' },
+  { value: 'women-dresses',  label: 'Women — Dresses' },
+  { value: 'women-tops',     label: 'Women — Tops' },
+  { value: 'women-pants',    label: 'Women — Pants' },
+  { value: 'women-skirts',   label: 'Women — Skirts' },
   { value: 'men',            label: 'Men' },
-  { value: 'men-shirts',     label: 'Men â€” Shirts' },
-  { value: 'men-pants',      label: 'Men â€” Pants' },
-  { value: 'men-jackets',    label: 'Men â€” Jackets' },
+  { value: 'men-shirts',     label: 'Men — Shirts' },
+  { value: 'men-pants',      label: 'Men — Pants' },
+  { value: 'men-jackets',    label: 'Men — Jackets' },
   { value: 'kids',           label: 'Kids' },
   { value: 'shoes',          label: 'Shoes' },
   { value: 'bags',           label: 'Bags' },
@@ -42,7 +30,7 @@ const emptyItem = () => ({
   _key: Math.random().toString(36).slice(2),
   name: '', category: 'women', price: '', qty: '',
   description: '', color: '', size: '',
-  images: [],           // uploaded URLs
+  images: [],
   uploading: false,
   uploadingMsg: ''
 });
@@ -84,7 +72,7 @@ export default function BulkUpload() {
       setItems(prev =>
         prev.map(it =>
           it._key === key
-            ? { ...it, images: [...it.images, ...res.data.urls], uploading: false, uploadingMsg: `âœ… ${res.data.urls.length} uploaded` }
+            ? { ...it, images: [...it.images, ...res.data.urls], uploading: false, uploadingMsg: `✅ ${res.data.urls.length} uploaded` }
             : it
         )
       );
@@ -92,7 +80,7 @@ export default function BulkUpload() {
       setItems(prev =>
         prev.map(it =>
           it._key === key
-            ? { ...it, uploading: false, uploadingMsg: 'âš ï¸ ' + (err.response?.data?.error || err.message) }
+            ? { ...it, uploading: false, uploadingMsg: '⚠️ ' + (err.response?.data?.error || err.message) }
             : it
         )
       );
@@ -109,7 +97,6 @@ export default function BulkUpload() {
     );
   };
 
-  // Totals â€” live
   const grandTotal = items.reduce((sum, it) => {
     const p = parseFloat(it.price) || 0;
     const q = parseInt(it.qty) || 0;
@@ -124,7 +111,7 @@ export default function BulkUpload() {
 
     const valid = items.filter(it => it.name && it.price && it.category);
     if (valid.length === 0) {
-      setMsg('âš ï¸ Fill in at least one item (name + price + category)');
+      setMsg('⚠️ Fill in at least one item (name + price + category)');
       setSaving(false);
       return;
     }
@@ -134,7 +121,6 @@ export default function BulkUpload() {
 
     for (const it of valid) {
       try {
-        // 1. Create product
         const productRes = await api.post('/products', {
           name: it.name,
           category: it.category,
@@ -144,7 +130,6 @@ export default function BulkUpload() {
           images: it.images
         });
 
-        // 2. Optional variant
         if (it.color.trim()) {
           await api.post('/variants', {
             productId: productRes.data.id,
@@ -161,7 +146,7 @@ export default function BulkUpload() {
       }
     }
 
-    setMsg(`âœ… Saved ${success} product(s)${failed ? ` Â· âš ï¸ ${failed} failed` : ''}`);
+    setMsg(`✅ Saved ${success} product(s)${failed ? ` · ⚠️ ${failed} failed` : ''}`);
     if (success > 0) {
       setItems([emptyItem()]);
     }
@@ -180,7 +165,6 @@ export default function BulkUpload() {
         </button>
       </div>
 
-      {/* Item cards */}
       {items.map((it, idx) => {
         const subtotal = (parseFloat(it.price) || 0) * (parseInt(it.qty) || 0);
         return (
@@ -236,7 +220,7 @@ export default function BulkUpload() {
                 onChange={e => updateItem(it._key, 'size', e.target.value)}
                 className="border px-3 py-2 bg-white"
               >
-                <option value="">â€” Size (optional) â€”</option>
+                <option value="">— Size (optional) —</option>
                 {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
 
@@ -256,12 +240,10 @@ export default function BulkUpload() {
                 className="border px-3 py-2"
               />
 
-              {/* Subtotal */}
               <div className="md:col-span-2 text-right text-sm text-gray-600 border-t pt-2">
                 Subtotal: <strong>TZS {subtotal.toLocaleString()}</strong>
               </div>
 
-              {/* Image upload */}
               <div className="md:col-span-2 border-2 border-dashed border-gray-300 p-4 text-center">
                 <input
                   type="file"
@@ -288,7 +270,7 @@ export default function BulkUpload() {
                         type="button"
                         onClick={() => removeImage(it._key, url)}
                         className="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 text-xs opacity-0 group-hover:opacity-100"
-                      >âœ•</button>
+                      >✕</button>
                     </div>
                   ))}
                 </div>
@@ -298,7 +280,6 @@ export default function BulkUpload() {
         );
       })}
 
-      {/* Summary */}
       <div className="border-2 border-black p-5 mb-6">
         <h2 className="text-lg font-medium mb-3">Summary</h2>
         <div className="flex justify-between text-sm py-1">
