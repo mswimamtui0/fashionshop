@@ -20,7 +20,11 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('cart');
     setUser(null);
+
+    // 👇 Tell the CartProvider to reset its in-memory state
+    window.dispatchEvent(new Event('auth:logout'));
   };
 
   return (

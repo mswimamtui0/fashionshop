@@ -1,12 +1,26 @@
 ﻿const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+// Convert DB string "url1,url2,url3" → array for frontend
+function formatProduct(p) {
+  return { ...p, images: p.images ? p.images.split(',').filter(Boolean) : [] };
+}
+
 exports.list = async (req, res) => {
   try {
     const { category, search, sort } = req.query;
     const where = {};
-    if (category) where.category = category;
-    if (search) where.name = { contains: search, mode: 'insensitive' };
+
+    if (category) {
+      where.OR = [
+        { category: category },
+        { category: { startsWith: `${category}-` } }
+      ];
+    }
+
+    if (search) {
+      where.name = { contains: search };
+    }
 
     let orderBy = { createdAt: 'desc' };
     if (sort === 'popular') orderBy = { views: 'desc' };
@@ -14,8 +28,9 @@ exports.list = async (req, res) => {
     if (sort === 'price_desc') orderBy = { price: 'desc' };
 
     const products = await prisma.product.findMany({ where, orderBy });
-    res.json(products);
+    res.json(products.map(formatProduct));
   } catch (err) {
+    console.error('List products error:', err);
     res.status(400).json({ error: err.message });
   }
 };
@@ -26,7 +41,7 @@ exports.getOne = async (req, res) => {
       where: { id: parseInt(req.params.id) },
       data: { views: { increment: 1 } }
     });
-    res.json(product);
+    res.json(formatProduct(product));
   } catch (err) {
     res.status(404).json({ error: 'Product not found' });
   }
@@ -40,6 +55,10 @@ exports.create = async (req, res) => {
       return res.status(400).json({ error: 'Name, description, price, category required' });
     }
 
+    const imagesStr = Array.isArray(images)
+      ? images.join(',')
+      : (images || '');
+
     const product = await prisma.product.create({
       data: {
         name,
@@ -47,23 +66,32 @@ exports.create = async (req, res) => {
         price: parseFloat(price),
         oldPrice: oldPrice ? parseFloat(oldPrice) : null,
         category,
-        images: Array.isArray(images) ? images : [],
+        images: imagesStr,
         stock: stock ? parseInt(stock) : 0
       }
     });
-    res.json(product);
+
+    res.json(formatProduct(product));
   } catch (err) {
+    console.error('Create product error:', err);
     res.status(400).json({ error: err.message });
   }
 };
 
 exports.update = async (req, res) => {
   try {
+    const data = { ...req.body };
+
+    if (Array.isArray(data.images)) data.images = data.images.join(',');
+    if (data.price) data.price = parseFloat(data.price);
+    if (data.oldPrice) data.oldPrice = parseFloat(data.oldPrice);
+    if (data.stock) data.stock = parseInt(data.stock);
+
     const product = await prisma.product.update({
       where: { id: parseInt(req.params.id) },
-      data: req.body
+      data
     });
-    res.json(product);
+    res.json(formatProduct(product));
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -84,7 +112,37 @@ exports.trending = async (req, res) => {
       orderBy: { views: 'desc' },
       take: 10
     });
-    res.json(products);
+    res.json(products.map(formatProduct));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// NEW: latest products — used by the Hero to rotate through newest uploads
+exports.latest = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 5;
+    const products = await prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: limit
+    });
+    res.json(products.map(formatProduct));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// Debug helper — lists all distinct categories and counts
+exports.categories = async (req, res) => {
+  try {
+    const all = await prisma.product.findMany({
+      select: { category: true }
+    });
+    const counts = {};
+    for (const p of all) {
+      counts[p.category] = (counts[p.category] || 0) + 1;
+    }
+    res.json(counts);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

@@ -2,89 +2,128 @@
 import { Link } from 'react-router-dom';
 import api from '../api/axios.js';
 
+const API_URL = import.meta.env.VITE_API_URL
+  ? import.meta.env.VITE_API_URL.replace('/api', '')
+  : 'http://localhost:5000';
+
+function getImageUrl(path) {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  return `${API_URL}${path}`;
+}
+
 const FALLBACK_IMAGES = [
   'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600',
   'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600',
-  'https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600'
+  'https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600',
 ];
 
-export default function Hero() {
-  const [images, setImages] = useState(FALLBACK_IMAGES);
-  const [current, setCurrent] = useState(0);
+const ROTATE_MS = 5000;   // change image every 5 seconds
 
-  // Load trending product images
+export default function Hero() {
+  const [slides, setSlides] = useState([]);
+  const [current, setCurrent] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+
+  // 1. Load products from the backend
   useEffect(() => {
-    api.get('/products/trending')
+    api.get('/products/latest?limit=8')
       .then(res => {
-        const urls = res.data
+        const images = (res.data || [])
           .map(p => p.images?.[0])
-          .filter(Boolean);
-        if (urls.length > 0) setImages(urls);
+          .filter(Boolean)
+          .map(getImageUrl);
+
+        setSlides(images.length > 0 ? images : FALLBACK_IMAGES);
       })
-      .catch(() => {});
+      .catch(() => setSlides(FALLBACK_IMAGES))
+      .finally(() => setLoaded(true));
   }, []);
 
-  // Auto rotate every 5 seconds
+  // 2. Rotate the active image every ROTATE_MS
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent(prev => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [images.length]);
+    if (slides.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrent(prev => (prev + 1) % slides.length);
+    }, ROTATE_MS);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  // 3. Preload the next image so rotation is smooth (no flash)
+  useEffect(() => {
+    if (slides.length === 0) return;
+    const next = (current + 1) % slides.length;
+    const img = new Image();
+    img.src = slides[next];
+  }, [current, slides]);
+
+  if (!loaded || slides.length === 0) {
+    return <section className="relative h-[55vh] min-h-[380px] bg-gray-900" />;
+  }
 
   return (
-    <section className="relative h-[85vh] w-full overflow-hidden bg-black">
-      {/* Background layers */}
-      {images.map((img, i) => (
+    <section className="relative h-[55vh] min-h-[380px] w-full overflow-hidden bg-black">
+
+      {/* Layer of images, cross-faded */}
+      {slides.map((src, i) => (
         <div
           key={i}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             i === current ? 'opacity-100' : 'opacity-0'
           }`}
         >
           <img
-            src={img}
-            alt={`Slide ${i}`}
+            src={src}
+            alt={`Slide ${i + 1}`}
             className="w-full h-full object-cover"
             style={{
-              transform: i === current ? 'scale(1.08)' : 'scale(1)',
-              transition: 'transform 6s ease-out'
+              transform: i === current ? 'scale(1.05)' : 'scale(1)',
+              transition: 'transform 6s ease-out',
+            }}
+            onError={e => {
+              e.target.src = FALLBACK_IMAGES[0];
             }}
           />
         </div>
       ))}
 
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/40" />
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
 
-      {/* Text */}
+      {/* Center text */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
-        <h1 className="text-5xl md:text-7xl font-light tracking-wide">
+        <p className="text-xs md:text-sm tracking-[0.35em] uppercase mb-3 opacity-90">
+          FashionShop
+        </p>
+        <h1 className="text-4xl md:text-6xl font-light tracking-wide max-w-3xl">
           New Season Essentials
         </h1>
-        <p className="mt-4 text-lg md:text-xl font-light">
+        <p className="mt-3 text-sm md:text-base font-light opacity-90">
           Discover the latest in fashion
         </p>
+
         <Link
           to="/shop"
-          className="mt-8 px-10 py-4 bg-white text-black text-sm tracking-widest uppercase hover:bg-black hover:text-white transition"
+          className="mt-6 px-8 py-3 bg-white text-black text-sm tracking-widest uppercase hover:bg-gray-200 transition"
         >
           Shop Now
         </Link>
 
         {/* Slide indicators */}
-        <div className="absolute bottom-8 flex gap-2">
-          {images.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`h-1 transition-all ${
-                i === current ? 'w-8 bg-white' : 'w-4 bg-white/40'
-              }`}
-              aria-label={`Slide ${i + 1}`}
-            />
-          ))}
-        </div>
+        {slides.length > 1 && (
+          <div className="absolute bottom-6 flex gap-2">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                aria-label={`Slide ${i + 1}`}
+                className={`h-1 transition-all ${
+                  i === current ? 'w-8 bg-white' : 'w-3 bg-white/40 hover:bg-white/70'
+                }`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

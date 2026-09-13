@@ -1,13 +1,25 @@
 ﻿import { Link } from 'react-router-dom';
 
+// Where the backend serves uploaded files
+const API_URL = import.meta.env.VITE_API_URL
+  ? import.meta.env.VITE_API_URL.replace('/api', '')
+  : 'http://localhost:5000';
+
+function getImageUrl(path) {
+  if (!path) return 'https://via.placeholder.com/400';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  return `${API_URL}${path}`;
+}
+
 export default function ProductCard({ product }) {
   return (
     <Link to={`/product/${product.id}`} className="group">
       <div className="aspect-[3/4] overflow-hidden bg-gray-100">
         <img
-          src={product.images?.[0] || 'https://via.placeholder.com/400'}
+          src={getImageUrl(product.images?.[0])}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          onError={e => { e.target.src = 'https://via.placeholder.com/400'; }}
         />
       </div>
       <div className="mt-3 text-sm">

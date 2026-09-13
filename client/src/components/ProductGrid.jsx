@@ -25,7 +25,7 @@ export default function ProductGrid({ title, sort, category, limit }) {
       ) : products.length === 0 ? (
         <p className="text-gray-400">No products yet.</p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
           {products.map(p => <ProductCard key={p.id} product={p} />)}
         </div>
       )}

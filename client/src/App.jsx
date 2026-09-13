@@ -10,6 +10,8 @@ import Register from './pages/Register.jsx';
 import AdminDashboard from './pages/Admin/Dashboard.jsx';
 import AdminProducts from './pages/Admin/Products.jsx';
 import AdminSMS from './pages/Admin/SMS.jsx';
+import BulkUpload from './pages/Admin/BulkUpload.jsx';
+import Account from './pages/Account.jsx';
 
 export default function App() {
   return (
@@ -26,6 +28,8 @@ export default function App() {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/products" element={<AdminProducts />} />
           <Route path="/admin/sms" element={<AdminSMS />} />
+          <Route path="/admin/bulk" element={<BulkUpload />} />
+          <Route path="/account" element={<Account />} />
         </Routes>
       </main>
       <Footer />
