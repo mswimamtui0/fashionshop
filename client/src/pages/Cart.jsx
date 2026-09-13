@@ -4,9 +4,18 @@ import { useAuth } from '../context/AuthContext.jsx';
 import api from '../api/axios.js';
 import { useState } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL
-  ? import.meta.env.VITE_API_URL.replace('/api', '')
-  : 'http://localhost:5000';
+const API_URL =
+  import.meta.env.VITE_API_URL
+    ? import.meta.env.VITE_API_URL.replace('/api', '')
+    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
+    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://fashionshop1.onrender.com');PI_URL.replace('/api', '')
+    : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://fashionshop1.onrender.com');
 
 const SELLER_WHATSAPP = '255757170544';
 const SELLER_MPESA    = '0757 170 544';
