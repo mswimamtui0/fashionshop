@@ -28,3 +28,10 @@ server/uploads/*
 
 # Prisma
 server/prisma/migrations/*.sql.bak
+server/prisma/*.db
+server/prisma/*.db-journal
+
+# Vercel / Vite cache
+.vercel/
+.vite/
+client/.vite/
