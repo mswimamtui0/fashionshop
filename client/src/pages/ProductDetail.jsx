@@ -52,13 +52,13 @@ export default function ProductDetail() {
 
   const whatsappMessage = encodeURIComponent(
     `Habari! Nataka kununua:\n\n` +
-    `ðŸ“¦ ${product.name}\n` +
+    `Ã°Å¸â€œÂ¦ ${product.name}\n` +
     (selectedVariant
-      ? `ðŸŽ¨ ${selectedVariant.color}${selectedVariant.size ? ` Â· ${selectedVariant.size}` : ''}\n`
+      ? `Ã°Å¸Å½Â¨ ${selectedVariant.color}${selectedVariant.size ? ` Ã‚Â· ${selectedVariant.size}` : ''}\n`
       : '') +
-    `ðŸ’° Price: TZS ${Number(currentPrice).toLocaleString()}\n` +
-    `ðŸ”¢ Quantity: ${qty}\n` +
-    `ðŸ’µ Total: TZS ${total.toLocaleString()}\n\n` +
+    `Ã°Å¸â€™Â° Price: TZS ${Number(currentPrice).toLocaleString()}\n` +
+    `Ã°Å¸â€Â¢ Quantity: ${qty}\n` +
+    `Ã°Å¸â€™Âµ Total: TZS ${total.toLocaleString()}\n\n` +
     `Naomba kujadiliana zaidi. Asante!`
   );
   const whatsappLink = `https://wa.me/${SELLER_WHATSAPP}?text=${whatsappMessage}`;
@@ -81,7 +81,7 @@ export default function ProductDetail() {
     <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
 
-        {/* â”€â”€ Gallery â”€â”€ */}
+        {/* Ã¢â€â‚¬Ã¢â€â‚¬ Gallery Ã¢â€â‚¬Ã¢â€â‚¬ */}
         <div className="md:sticky md:top-20 md:self-start">
           <div className="w-full max-w-[420px] mx-auto">
             <img
@@ -112,7 +112,7 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* â”€â”€ Details â”€â”€ */}
+        {/* Ã¢â€â‚¬Ã¢â€â‚¬ Details Ã¢â€â‚¬Ã¢â€â‚¬ */}
         <div>
           <h1 className="text-2xl md:text-3xl font-light">{product.name}</h1>
           <p className="mt-3 text-xl md:text-2xl">TZS {currentPrice.toLocaleString()}</p>
@@ -120,7 +120,7 @@ export default function ProductDetail() {
             {product.description}
           </p>
 
-          {/* â”€â”€ Variants â”€â”€ */}
+          {/* Ã¢â€â‚¬Ã¢â€â‚¬ Variants Ã¢â€â‚¬Ã¢â€â‚¬ */}
           {variants.length > 0 && (
             <div className="mt-6">
               <p className="text-xs uppercase tracking-wider text-gray-500 mb-3">
@@ -156,11 +156,11 @@ export default function ProductDetail() {
             </div>
           )}
 
-          {/* â”€â”€ Quantity â”€â”€ */}
+          {/* Ã¢â€â‚¬Ã¢â€â‚¬ Quantity Ã¢â€â‚¬Ã¢â€â‚¬ */}
           <div className="mt-6 flex items-center gap-4">
             <span className="text-xs uppercase tracking-wider text-gray-500">Quantity</span>
             <div className="flex items-center border border-gray-300">
-              <button onClick={decrease} className="w-9 h-9 text-lg hover:bg-gray-100">âˆ’</button>
+              <button onClick={decrease} className="w-9 h-9 text-lg hover:bg-gray-100">Ã¢Ë†â€™</button>
               <input
                 type="number"
                 min="1"
@@ -173,7 +173,7 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* â”€â”€ Price summary â”€â”€ */}
+          {/* Ã¢â€â‚¬Ã¢â€â‚¬ Price summary Ã¢â€â‚¬Ã¢â€â‚¬ */}
           <div className="mt-5 p-3 bg-gray-50 border border-gray-200 text-sm">
             <div className="flex justify-between text-gray-600">
               <span>Subtotal</span>
@@ -185,7 +185,7 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* â”€â”€ PAYMENT METHODS â”€â”€ */}
+          {/* Ã¢â€â‚¬Ã¢â€â‚¬ PAYMENT METHODS Ã¢â€â‚¬Ã¢â€â‚¬ */}
           <div className="mt-6 border border-gray-200 p-4">
             <p className="text-xs uppercase tracking-wider text-gray-500 mb-3">
               How would you like to pay?
@@ -193,12 +193,12 @@ export default function ProductDetail() {
 
             <div className="space-y-2">
               {[
-                { id: 'whatsapp', label: 'Order on WhatsApp & negotiate',    icon: 'ðŸ’¬' },
-                { id: 'mpesa',    label: 'M-Pesa (Vodacom)',                 icon: 'ðŸ“±' },
-                { id: 'tigopesa', label: 'Mixx by Yas (Tigo Pesa)',          icon: 'ðŸ“±' },
-                { id: 'airtel',   label: 'Airtel Money',                     icon: 'ðŸ“±' },
-                { id: 'halopesa', label: 'HaloPesa',                         icon: 'ðŸ“±' },
-                { id: 'cash',     label: 'Cash on Delivery (Dar es Salaam)', icon: 'ðŸ’µ' },
+                { id: 'whatsapp', label: 'Order on WhatsApp & negotiate',    icon: 'Ã°Å¸â€™Â¬' },
+                { id: 'mpesa',    label: 'M-Pesa (Vodacom)',                 icon: 'Ã°Å¸â€œÂ±' },
+                { id: 'tigopesa', label: 'Mixx by Yas (Tigo Pesa)',          icon: 'Ã°Å¸â€œÂ±' },
+                { id: 'airtel',   label: 'Airtel Money',                     icon: 'Ã°Å¸â€œÂ±' },
+                { id: 'halopesa', label: 'HaloPesa',                         icon: 'Ã°Å¸â€œÂ±' },
+                { id: 'cash',     label: 'Cash on Delivery (Dar es Salaam)', icon: 'Ã°Å¸â€™Âµ' },
               ].map(pm => (
                 <label
                   key={pm.id}
@@ -223,7 +223,7 @@ export default function ProductDetail() {
 
             <div className="mt-3 p-3 bg-blue-50 border border-blue-200 text-xs md:text-sm text-blue-900">
               {paymentMethod === 'whatsapp' && (
-                <>Click <strong>Order via WhatsApp</strong> below â€” chat directly with us to confirm price, delivery, and payment.</>
+                <>Click <strong>Order via WhatsApp</strong> below Ã¢â‚¬â€ chat directly with us to confirm price, delivery, and payment.</>
               )}
               {paymentMethod === 'mpesa' && (
                 <>Send <strong>TZS {total.toLocaleString()}</strong> to <strong>M-Pesa {SELLER_MPESA}</strong> (Name: FASHIONSHOP). Then click <strong>Order via WhatsApp</strong> and share the confirmation code.</>
@@ -243,7 +243,7 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* â”€â”€ ADD TO CART â€” with green confirmation â”€â”€ */}
+          {/* Ã¢â€â‚¬Ã¢â€â‚¬ ADD TO CART Ã¢â‚¬â€ with green confirmation Ã¢â€â‚¬Ã¢â€â‚¬ */}
           <button
             onClick={handleAddToCart}
             disabled={currentStock === 0}
@@ -258,7 +258,7 @@ export default function ProductDetail() {
             {currentStock === 0
               ? 'Out of Stock'
               : justAdded
-              ? `âœ… Added ${qty} to Cart`
+              ? `Ã¢Å“â€¦ Added ${qty} to Cart`
               : `Add ${qty} to Cart`}
           </button>
 
@@ -266,16 +266,16 @@ export default function ProductDetail() {
           {count > 0 && (
             <div className="mt-3 p-3 bg-gray-50 border border-gray-200 text-sm flex flex-wrap justify-between items-center gap-2">
               <div>
-                <span className="text-gray-500">ðŸ›’ In your cart: </span>
+                <span className="text-gray-500">Ã°Å¸â€ºâ€™ In your cart: </span>
                 <strong>{count} item{count !== 1 ? 's' : ''}</strong>
-                <span className="text-gray-500"> Â· </span>
+                <span className="text-gray-500"> Ã‚Â· </span>
                 <strong>TZS {cartTotal.toLocaleString()}</strong>
               </div>
               <Link
                 to="/cart"
                 className="text-xs uppercase tracking-wider underline hover:no-underline"
               >
-                Go to Cart â†’
+                Go to Cart Ã¢â€ â€™
               </Link>
             </div>
           )}
@@ -294,7 +294,7 @@ export default function ProductDetail() {
           </a>
 
           <p className="mt-3 text-xs text-gray-500 text-center">
-            ðŸ”’ Secure ordering Â· We'll contact you to confirm
+            Ã°Å¸â€â€™ Secure ordering Ã‚Â· We'll contact you to confirm
           </p>
         </div>
       </div>

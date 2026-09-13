@@ -20,7 +20,7 @@ function Stars({ value = 0, size = 14 }) {
     <span className="inline-flex items-center" style={{ fontSize: size }}>
       {[1, 2, 3, 4, 5].map(i => (
         <span key={i} className={i <= full ? 'text-yellow-500' : 'text-gray-300'}>
-          â˜…
+          Ã¢Ëœâ€¦
         </span>
       ))}
       <span className="text-xs text-gray-500 ml-1">({value.toFixed(1)})</span>
@@ -81,7 +81,7 @@ export default function Account() {
         setWishlist(res.data);
       }
     } catch (err) {
-      setMsg('âš ï¸ ' + (err.response?.data?.error || 'Failed'));
+      setMsg('Ã¢Å¡Â Ã¯Â¸Â ' + (err.response?.data?.error || 'Failed'));
     }
   };
 
@@ -94,18 +94,18 @@ export default function Account() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
 
-      {/* â”€â”€ Header â”€â”€ */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ Header Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <div className="flex flex-wrap justify-between items-center gap-4 mb-6 border-b pb-6">
         <div>
           <h1 className="text-3xl font-light">My Dashboard</h1>
           <p className="text-sm text-gray-500 mt-1">
-            {user.name} Â· {user.phone}
+            {user.name} Ã‚Â· {user.phone}
           </p>
         </div>
         <button
           onClick={() => {
             logout();
-            window.location.href = '/';   // â† full reload â†’ home page + cleared cart
+            window.location.href = '/';   // Ã¢â€ Â full reload Ã¢â€ â€™ home page + cleared cart
           }}
           className="px-5 py-2 border border-black text-sm uppercase tracking-widest hover:bg-black hover:text-white transition"
         >
@@ -113,7 +113,7 @@ export default function Account() {
         </button>
       </div>
 
-      {/* â”€â”€ Stats â”€â”€ */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ Stats Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <Stat label="Orders"       value={orders.length} />
         <Stat label="Items Bought" value={totalItems} />
@@ -121,31 +121,31 @@ export default function Account() {
         <Stat label="Wishlist"     value={wishlist.length} />
       </div>
 
-      {/* â”€â”€ Tabs â”€â”€ */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ Tabs Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <div className="flex flex-wrap gap-2 mb-8">
         <TabBtn active={tab === 'shop'}     onClick={() => setTab('shop')}>
-          ðŸ›ï¸ Shop All Products
+          Ã°Å¸â€ºÂÃ¯Â¸Â Shop All Products
         </TabBtn>
         <TabBtn active={tab === 'orders'}   onClick={() => setTab('orders')}>
-          ðŸ“¦ My Orders ({orders.length})
+          Ã°Å¸â€œÂ¦ My Orders ({orders.length})
         </TabBtn>
         <TabBtn active={tab === 'wishlist'} onClick={() => setTab('wishlist')}>
-          â¤ï¸ Wishlist ({wishlist.length})
+          Ã¢ÂÂ¤Ã¯Â¸Â Wishlist ({wishlist.length})
         </TabBtn>
       </div>
 
       {msg && <p className="mb-4 text-sm text-green-700">{msg}</p>}
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€ TAB: SHOP â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ TAB: SHOP Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */}
       {tab === 'shop' && (
         <>
-          {/* â”€â”€ YOUR SELECTION (CART) â€” TOP â”€â”€ */}
+          {/* Ã¢â€â‚¬Ã¢â€â‚¬ YOUR SELECTION (CART) Ã¢â‚¬â€ TOP Ã¢â€â‚¬Ã¢â€â‚¬ */}
           {items.length > 0 && (
             <div className="mb-10 border-2 border-black bg-white">
               <div className="flex flex-wrap items-center justify-between gap-3 bg-black text-white p-4">
                 <div>
                   <h2 className="text-lg md:text-xl">
-                    ðŸ›’ Your Selection ({count} item{count !== 1 ? 's' : ''})
+                    Ã°Å¸â€ºâ€™ Your Selection ({count} item{count !== 1 ? 's' : ''})
                   </h2>
                   <p className="text-xs text-white/70 mt-1">
                     Review your items below and confirm to pay
@@ -155,7 +155,7 @@ export default function Account() {
                   to="/cart"
                   className="px-5 py-2 bg-white text-black text-xs uppercase tracking-widest hover:bg-gray-200"
                 >
-                  Continue to Payment â†’
+                  Continue to Payment Ã¢â€ â€™
                 </Link>
               </div>
 
@@ -176,14 +176,14 @@ export default function Account() {
                         <p className="text-xs text-gray-500">{i.variantLabel}</p>
                       )}
                       <p className="text-sm text-gray-500 mt-1">
-                        TZS {i.price.toLocaleString()} Ã— {i.quantity}
+                        TZS {i.price.toLocaleString()} Ãƒâ€” {i.quantity}
                       </p>
                     </div>
                     <div className="flex items-center border bg-white">
                       <button
                         onClick={() => decrease(i.id)}
                         className="w-8 h-8 hover:bg-gray-100 text-lg"
-                      >âˆ’</button>
+                      >Ã¢Ë†â€™</button>
                       <span className="w-10 text-center text-sm">{i.quantity}</span>
                       <button
                         onClick={() => increase(i.id)}
@@ -198,7 +198,7 @@ export default function Account() {
                       className="text-red-500 text-lg w-8 h-8 hover:bg-red-50 rounded"
                       title="Remove"
                     >
-                      âœ•
+                      Ã¢Å“â€¢
                     </button>
                   </div>
                 ))}
@@ -221,7 +221,7 @@ export default function Account() {
             </div>
           )}
 
-          {/* â”€â”€ ALL PRODUCTS â€” BOTTOM â”€â”€ */}
+          {/* Ã¢â€â‚¬Ã¢â€â‚¬ ALL PRODUCTS Ã¢â‚¬â€ BOTTOM Ã¢â€â‚¬Ã¢â€â‚¬ */}
           <h2 className="text-xl mb-4">
             {items.length > 0 ? 'More Products' : 'All Products'}
           </h2>
@@ -250,7 +250,7 @@ export default function Account() {
                       </Link>
                       {cartItem && (
                         <span className="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1">
-                          âœ“ In cart ({cartItem.quantity})
+                          Ã¢Å“â€œ In cart ({cartItem.quantity})
                         </span>
                       )}
                       <button
@@ -259,7 +259,7 @@ export default function Account() {
                           liked ? 'text-red-500' : 'text-gray-400'
                         } hover:scale-110 transition`}
                       >
-                        {liked ? 'â™¥' : 'â™¡'}
+                        {liked ? 'Ã¢â„¢Â¥' : 'Ã¢â„¢Â¡'}
                       </button>
                     </div>
                     <div className="p-3">
@@ -275,7 +275,7 @@ export default function Account() {
                       <button
                         onClick={() => {
                           add(p, 1);
-                          setMsg(`âœ… ${p.name} added to cart`);
+                          setMsg(`Ã¢Å“â€¦ ${p.name} added to cart`);
                           setTimeout(() => setMsg(''), 2000);
                         }}
                         className="mt-3 w-full py-2 bg-black text-white text-xs uppercase tracking-widest hover:bg-gray-800"
@@ -291,7 +291,7 @@ export default function Account() {
         </>
       )}
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€ TAB: ORDERS â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ TAB: ORDERS Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */}
       {tab === 'orders' && (
         <>
           <h2 className="text-xl mb-4">My Orders</h2>
@@ -334,7 +334,7 @@ export default function Account() {
                         <span className="font-medium">
                           TZS {o.total.toLocaleString()}
                         </span>
-                        <span className="text-gray-400">{isOpen ? 'â–²' : 'â–¼'}</span>
+                        <span className="text-gray-400">{isOpen ? 'Ã¢â€“Â²' : 'Ã¢â€“Â¼'}</span>
                       </div>
                     </button>
                     {isOpen && (
@@ -351,7 +351,7 @@ export default function Account() {
                                 {item.product?.name || 'Product'}
                               </p>
                               <p className="text-xs text-gray-500">
-                                {item.quantity} Ã— TZS {item.price.toLocaleString()}
+                                {item.quantity} Ãƒâ€” TZS {item.price.toLocaleString()}
                               </p>
                             </div>
                             <p className="text-sm font-medium">
@@ -375,14 +375,14 @@ export default function Account() {
         </>
       )}
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€ TAB: WISHLIST â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ TAB: WISHLIST Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */}
       {tab === 'wishlist' && (
         <>
           <h2 className="text-xl mb-4">My Wishlist</h2>
           {wishlist.length === 0 ? (
             <div className="border border-dashed p-10 text-center text-gray-500">
               <p>No products in your wishlist yet.</p>
-              <p className="text-sm mt-1">Click the â™¡ on any product to save it here.</p>
+              <p className="text-sm mt-1">Click the Ã¢â„¢Â¡ on any product to save it here.</p>
               <button
                 onClick={() => setTab('shop')}
                 className="mt-4 px-6 py-3 bg-black text-white text-sm uppercase tracking-widest"
@@ -415,7 +415,7 @@ export default function Account() {
                       <button
                         onClick={() => {
                           add(w.product, 1);
-                          setMsg(`âœ… Added to cart`);
+                          setMsg(`Ã¢Å“â€¦ Added to cart`);
                           setTimeout(() => setMsg(''), 1500);
                         }}
                         className="flex-1 py-2 bg-black text-white text-xs uppercase tracking-widest hover:bg-gray-800"
@@ -427,7 +427,7 @@ export default function Account() {
                         className="px-3 py-2 border text-xs hover:bg-red-50"
                         title="Remove"
                       >
-                        âœ•
+                        Ã¢Å“â€¢
                       </button>
                     </div>
                   </div>

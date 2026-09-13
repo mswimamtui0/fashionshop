@@ -10,14 +10,14 @@ const API_URL =
 
 const CATEGORIES = [
   { value: 'women',          label: 'Women' },
-  { value: 'women-dresses',  label: 'Women — Dresses' },
-  { value: 'women-tops',     label: 'Women — Tops' },
-  { value: 'women-pants',    label: 'Women — Pants' },
-  { value: 'women-skirts',   label: 'Women — Skirts' },
+  { value: 'women-dresses',  label: 'Women â€” Dresses' },
+  { value: 'women-tops',     label: 'Women â€” Tops' },
+  { value: 'women-pants',    label: 'Women â€” Pants' },
+  { value: 'women-skirts',   label: 'Women â€” Skirts' },
   { value: 'men',            label: 'Men' },
-  { value: 'men-shirts',     label: 'Men — Shirts' },
-  { value: 'men-pants',      label: 'Men — Pants' },
-  { value: 'men-jackets',    label: 'Men — Jackets' },
+  { value: 'men-shirts',     label: 'Men â€” Shirts' },
+  { value: 'men-pants',      label: 'Men â€” Pants' },
+  { value: 'men-jackets',    label: 'Men â€” Jackets' },
   { value: 'kids',           label: 'Kids' },
   { value: 'shoes',          label: 'Shoes' },
   { value: 'bags',           label: 'Bags' },
@@ -72,7 +72,7 @@ export default function BulkUpload() {
       setItems(prev =>
         prev.map(it =>
           it._key === key
-            ? { ...it, images: [...it.images, ...res.data.urls], uploading: false, uploadingMsg: `✅ ${res.data.urls.length} uploaded` }
+            ? { ...it, images: [...it.images, ...res.data.urls], uploading: false, uploadingMsg: `âœ… ${res.data.urls.length} uploaded` }
             : it
         )
       );
@@ -80,7 +80,7 @@ export default function BulkUpload() {
       setItems(prev =>
         prev.map(it =>
           it._key === key
-            ? { ...it, uploading: false, uploadingMsg: '⚠️ ' + (err.response?.data?.error || err.message) }
+            ? { ...it, uploading: false, uploadingMsg: 'âš ï¸ ' + (err.response?.data?.error || err.message) }
             : it
         )
       );
@@ -111,7 +111,7 @@ export default function BulkUpload() {
 
     const valid = items.filter(it => it.name && it.price && it.category);
     if (valid.length === 0) {
-      setMsg('⚠️ Fill in at least one item (name + price + category)');
+      setMsg('âš ï¸ Fill in at least one item (name + price + category)');
       setSaving(false);
       return;
     }
@@ -146,7 +146,7 @@ export default function BulkUpload() {
       }
     }
 
-    setMsg(`✅ Saved ${success} product(s)${failed ? ` · ⚠️ ${failed} failed` : ''}`);
+    setMsg(`âœ… Saved ${success} product(s)${failed ? ` Â· âš ï¸ ${failed} failed` : ''}`);
     if (success > 0) {
       setItems([emptyItem()]);
     }
@@ -220,7 +220,7 @@ export default function BulkUpload() {
                 onChange={e => updateItem(it._key, 'size', e.target.value)}
                 className="border px-3 py-2 bg-white"
               >
-                <option value="">— Size (optional) —</option>
+                <option value="">â€” Size (optional) â€”</option>
                 {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
 
@@ -270,7 +270,7 @@ export default function BulkUpload() {
                         type="button"
                         onClick={() => removeImage(it._key, url)}
                         className="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 text-xs opacity-0 group-hover:opacity-100"
-                      >✕</button>
+                      >âœ•</button>
                     </div>
                   ))}
                 </div>
