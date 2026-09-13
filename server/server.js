@@ -62,14 +62,11 @@ app.use((err, req, res, next) => {
 // ── Start ───────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 
-// Local dev: run a real listening server
-// Vercel serverless: just export the app (Vercel handles routing)
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-  app.listen(PORT, () => {
-    console.log(`✅ Server running on port ${PORT}`);
-    console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`   Allowed origins: ${allowedOrigins.join(', ')}`);
-  });
-}
+// Render and most PaaS require binding to 0.0.0.0
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`   Allowed origins: ${allowedOrigins.join(', ')}`);
+});
 
 module.exports = app;
